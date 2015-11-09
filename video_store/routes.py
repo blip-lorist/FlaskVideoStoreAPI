@@ -1,15 +1,16 @@
-# @app.route("/")
-# def hello():
-#     return "Hello World!"
-#
-# # Be sure to use trailing slashes
-# @app.route("/unigoats/")
-# def whatever():
-#     return "this is another page"
-
 from video_store import app
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return "Hello, World!"
+    return "Video Store API!"
+
+@app.route('/')
+@app.route('/customers/')
+def customers():
+    return "List of customers!"
+
+@app.route('/')
+@app.route('/customers/<int:id>')
+def customer(id):
+    return "A customer's profile!"
