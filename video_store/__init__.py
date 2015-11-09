@@ -6,3 +6,4 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 from video_store import routes
+from video_store.models import Customer
