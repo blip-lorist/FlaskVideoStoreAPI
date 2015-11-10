@@ -1,10 +1,14 @@
 from video_store import app
+from flask import jsonify
 
 @app.route('/')
 @app.route('/index')
 def index():
     return "Video Store API!"
 
+@app.route('/zomg')
+def it_works():
+    return jsonify(zomg="It works!")
 # ____ CUSTOMER ENDPOINTS ____
 
 # GET all customers
