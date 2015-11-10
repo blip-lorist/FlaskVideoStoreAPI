@@ -26,6 +26,11 @@ class Customer(db.Model):
     def __repr__(self):
         return '<Customer %r>' % (self.name)
 
+class CustomerSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ('id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit')
+
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200))
@@ -41,6 +46,11 @@ class Movie(db.Model):
 
     def __repr__(self):
         return '<Movie %r>' % (self.name)
+
+class MovieSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ('id', 'title', 'overview', 'release_date', 'inventory')
 
 class Rental(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -59,8 +69,3 @@ class Rental(db.Model):
 
     def __repr__(self):
         return '<Rental %r>' % (self.name)
-
-class CustomerSchema(ma.Schema):
-    class Meta:
-        # Fields to expose
-        fields = ('id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit')
