@@ -45,7 +45,7 @@ class Movie(db.Model):
         self.inventory = inventory
 
     def __repr__(self):
-        return '<Movie %r>' % (self.name)
+        return '<Movie %r>' % (self.title)
 
 class MovieSchema(ma.Schema):
     class Meta:

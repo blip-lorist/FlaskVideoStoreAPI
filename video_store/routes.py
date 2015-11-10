@@ -1,9 +1,12 @@
 from video_store import app, db
 from flask import jsonify
 from .models import Customer, CustomerSchema, Movie, MovieSchema
+from sqlalchemy.sql import exists
 
-customer_schema = CustomerSchema(many=True)
-movie_schema = MovieSchema(many=True)
+customers_schema = CustomerSchema(many=True)
+movies_schema = MovieSchema(many=True)
+movie_schema = MovieSchema()
+
 
 @app.route('/')
 @app.route('/index')
@@ -20,7 +23,7 @@ def it_works():
 @app.route('/customers/')
 def customers():
     customers = Customer.query.all()
-    result = customer_schema.dump(customers)
+    result = customers_schema.dump(customers)
     return jsonify(customers=result.data)
 
 # GET subset of customers sorted by name, registered_at, or postal_code
@@ -33,7 +36,7 @@ def customers_subset(column, page):
         offset = (page * 50) - 50
 
     customers = Customer.query.order_by(column).limit(50).offset(offset)
-    result = customer_schema.dump(customers)
+    result = customers_schema.dump(customers)
     return jsonify(customers=result.data)
 
 # ____ MOVIES ENDPOINTS ____
@@ -43,7 +46,7 @@ def customers_subset(column, page):
 @app.route('/movies/')
 def movies():
     movies = Movie.query.all()
-    result = movie_schema.dump(movies)
+    result = movies_schema.dump(movies)
     return jsonify(movies=result.data)
 
 # GET subset of movies sorted by title or release_date
@@ -56,12 +59,16 @@ def movies_subset(column, page):
         offset = (page * 50) - 50
 
     movies = Movie.query.order_by(column).limit(50).offset(offset)
-    result = movie_schema.dump(movies)
+    result = movies_schema.dump(movies)
     return jsonify(movies=result.data)
 
 # ____ RENTALS ENDPOINTS ____
 
 # GET rental info on a specific movie
-@app.route('/rentals/<movie_title>')
+@app.route('/rentals/<movie_title>/')
 def rental_movie(movie_title):
-    return "List of rental movies!"
+    movie_title = movie_title.title()
+    movie_title = movie_title.encode('ascii', 'ignore')
+    movie = Movie.query.filter_by(title=movie_title).first()
+    result = movie_schema.dump(movie)
+    return jsonify(movies=result.data)
