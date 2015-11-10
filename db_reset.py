@@ -25,7 +25,7 @@ def byteify(input):
 # The 'with' statement ensures that the file is closed
 with open('seeds/customers.json') as seed_customers:
     customers = json.load(seed_customers)
-    customers = byteify(customers)
+    # customers = byteify(customers)
 
 # Create a db record for each customer
 for customer in customers:
@@ -44,7 +44,7 @@ for customer in customers:
 
 with open('seeds/movies.json') as seed_movies:
     movies = json.load(seed_movies)
-    movies = byteify(movies)
+    # movies = byteify(movies)
 
 # Create a db record for each customer
 for movie in movies:
@@ -58,7 +58,7 @@ for movie in movies:
 
 with open('seeds/rentals.json') as seed_rentals:
     rentals = json.load(seed_rentals)
-    rentals = byteify(rentals)
+    # rentals = byteify(rentals)
 
 # Create a db record for each customer
 for rental in rentals:
