@@ -26,7 +26,13 @@ def customers():
 # /customers/name/page1
 @app.route('/customers/<column>/page<int:page>')
 def customers_subset(column, page):
-    customers = Customer.query.order_by(column).all()
+    # import pdb; pdb.set_trace()
+    if page <= 1:
+        offset = 0
+    else:
+        offset = (page * 50) - 50
+
+    customers = Customer.query.order_by(column).limit(50).offset(offset)
     result = customer_schema.dump(customers)
     return jsonify(customers=result.data)
 
