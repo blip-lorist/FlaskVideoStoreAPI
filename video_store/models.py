@@ -11,8 +11,7 @@ class Customer(db.Model):
     phone = db.Column(db.String(200))
     account_credit = db.Column(db.String(200))
 
-    def __init__(self, id, name, registered_at, address, city, state, postal_code, phone, account_credit):
-        self.id = id
+    def __init__(self, name, registered_at, address, city, state, postal_code, phone, account_credit):
         self.name = name
         self.registered_at = registered_at
         self.address = address
@@ -40,3 +39,21 @@ class Movie(db.Model):
 
     def __repr__(self):
         return '<Movie %r>' % (self.name)
+
+class Rental(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer)
+    customer_id = db.Column(db.Integer)
+    returned_date = db.Column(db.String(200))
+    due_date = db.Column(db.String(200))
+    checked_out = db.Column(db.String(200))
+
+    def __init__(self, movie_id, customer_id, returned_date, due_date, checked_out):
+        self.movie_id = movie_id
+        self.customer_id = customer_id
+        self.returned_date = returned_date
+        self.due_date = due_date
+        self.checked_out = checked_out
+
+    def __repr__(self):
+        return '<Rental %r>' % (self.name)

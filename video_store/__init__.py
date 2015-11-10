@@ -1,9 +1,12 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
-
 app = Flask(__name__)
-app.config.from_object('config')
-db = SQLAlchemy(app)
 
 from video_store import routes
-from video_store.models import Customer
+import os
+
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+db = SQLAlchemy(app)
+app.config.from_object('config')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
