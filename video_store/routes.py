@@ -1,24 +1,40 @@
-from video_store import app
+from video_store import app, db
+from flask import jsonify
+from .models import Customer, CustomerSchema
+
+customer_schema = CustomerSchema(many=True)
 
 @app.route('/')
 @app.route('/index')
 def index():
     return "Video Store API!"
 
+@app.route('/zomg')
+def it_works():
+    return jsonify(zomg="It works!")
 # ____ CUSTOMER ENDPOINTS ____
 
 # GET all customers
 # /customers
 @app.route('/customers/')
 def customers():
-    return "List of customers!"
+    customers = Customer.query.all()
+    result = customer_schema.dump(customers)
+    return jsonify(customers=result.data)
 
 # GET subset of customers sorted by name, registered_at, or postal_code
 # /customers/name/page1
 @app.route('/customers/<column>/page<int:page>')
 def customers_subset(column, page):
-    return "Subset of customers on page {}!".format(page)
+    # import pdb; pdb.set_trace()
+    if page <= 1:
+        offset = 0
+    else:
+        offset = (page * 50) - 50
 
+    customers = Customer.query.order_by(column).limit(50).offset(offset)
+    result = customer_schema.dump(customers)
+    return jsonify(customers=result.data)
 
 # ____ MOVIES ENDPOINTS ____
 

@@ -1,4 +1,6 @@
 from video_store import db
+from video_store import ma
+
 
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,3 +59,8 @@ class Rental(db.Model):
 
     def __repr__(self):
         return '<Rental %r>' % (self.name)
+
+class CustomerSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ('id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit')
