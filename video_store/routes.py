@@ -1,18 +1,8 @@
 from video_store import app, db
 from flask import jsonify
-from .models import Customer
+from .models import Customer, CustomerSchema
 
-def to_json(model):
-    """ Returns a JSON representation of an SQLAlchemy-backed object.
-    """
-    json = {}
-    json['fields'] = {}
-    json['pk'] = getattr(model, 'id')
-
-    for col in model._sa_class_manager.mapper.mapped_table.columns:
-        json['fields'][col.name] = getattr(model, col.name)
-
-    return dumps([json])
+customer_schema = CustomerSchema(many=True)
 
 @app.route('/')
 @app.route('/index')
@@ -28,9 +18,9 @@ def it_works():
 # /customers
 @app.route('/customers/')
 def customers():
-    customers = str(Customer.query.all())
-    import pdb; pdb.set_trace()
-    return jsonify(customers=customers)
+    customers = Customer.query.all()
+    result = customer_schema.dump(customers)
+    return jsonify(customers=result.data)
 
 # GET subset of customers sorted by name, registered_at, or postal_code
 # /customers/name/page1
