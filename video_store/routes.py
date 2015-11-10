@@ -1,8 +1,9 @@
 from video_store import app, db
 from flask import jsonify
-from .models import Customer, CustomerSchema
+from .models import Customer, CustomerSchema, Movie, MovieSchema
 
 customer_schema = CustomerSchema(many=True)
+movie_schema = MovieSchema(many=True)
 
 @app.route('/')
 @app.route('/index')
@@ -26,7 +27,6 @@ def customers():
 # /customers/name/page1
 @app.route('/customers/<column>/page<int:page>')
 def customers_subset(column, page):
-    # import pdb; pdb.set_trace()
     if page <= 1:
         offset = 0
     else:
@@ -42,13 +42,22 @@ def customers_subset(column, page):
 # /movies
 @app.route('/movies/')
 def movies():
-    return "List of movies!"
+    movies = Movie.query.all()
+    result = movie_schema.dump(movies)
+    return jsonify(movies=result.data)
 
 # GET subset of movies sorted by title or release_date
 # /movies/name/page1
 @app.route('/movies/<column>/page<int:page>')
 def movies_subset(column, page):
-    return "Subset of movies on page {}!".format(page)
+    if page <= 1:
+        offset = 0
+    else:
+        offset = (page * 50) - 50
+
+    movies = Movie.query.order_by(column).limit(50).offset(offset)
+    result = movie_schema.dump(movies)
+    return jsonify(movies=result.data)
 
 # ____ RENTALS ENDPOINTS ____
 
