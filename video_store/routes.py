@@ -26,8 +26,9 @@ def customers():
 # /customers/name/page1
 @app.route('/customers/<column>/page<int:page>')
 def customers_subset(column, page):
-    return "Subset of customers on page {}!".format(page)
-
+    customers = Customer.query.order_by(column).all()
+    result = customer_schema.dump(customers)
+    return jsonify(customers=result.data)
 
 # ____ MOVIES ENDPOINTS ____
 
