@@ -60,3 +60,4 @@ target/
 
 app.db
 app.db-journal
+test.db
