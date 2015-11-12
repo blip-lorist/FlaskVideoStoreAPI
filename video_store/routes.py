@@ -7,15 +7,10 @@ customers_schema = CustomerSchema(many=True)
 movies_schema = MovieSchema(many=True)
 movie_schema = MovieSchema()
 
-
-@app.route('/')
-@app.route('/index')
-def index():
-    return "Video Store API!"
-
 @app.route('/zomg')
 def it_works():
     return jsonify(zomg="It works!")
+
 # ____ CUSTOMER ENDPOINTS ____
 
 # GET all customers
